@@ -3,6 +3,9 @@ const warehouses = JSON.parse(
 );
 const avg_lat = JSON.parse(document.getElementById('avg_lat').textContent);
 const avg_long = JSON.parse(document.getElementById('avg_long').textContent);
+const shipment_data = JSON.parse(
+	document.getElementById('shipment_data').textContent
+);
 var map = L.map('map').setView([avg_lat, avg_long], 13);
 
 console.log(warehouses);
@@ -24,6 +27,30 @@ window.addEventListener('load', () => {
 		marker = L.marker([warehouse.lat, warehouse.long]);
 		marker.addTo(map).bindPopup(warehouse.name);
 		markerGroup.push(marker);
+
+		if (warehouse.shipment_data) {
+			warehouse.shipment_data.forEach((s) => {
+				var router = L.Routing.osrmv1(),
+					waypoints = [],
+					line;
+				waypoints.push({
+					latLng: L.latLng(warehouse.lat, warehouse.long),
+				});
+				waypoints.push({ latLng: L.latLng(s.lat, s.long) });
+
+				router.route(waypoints, function (err, routes) {
+					if (line) {
+						map.removeLayer(line);
+					}
+
+					if (err) {
+						alert(err);
+					} else {
+						line = L.Routing.line(routes[0]).addTo(map);
+					}
+				});
+			});
+		}
 	});
 
 	var group = new L.featureGroup(markerGroup);
