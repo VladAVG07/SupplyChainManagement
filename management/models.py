@@ -104,6 +104,7 @@ class Shipments(models.Model):
     estimated_delivery = models.DateTimeField(blank=True, null=True)
     delivery_status = models.CharField(max_length=50, blank=True, null=True)
     tracking_number = models.CharField(unique=True, max_length=50, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True)
 
     class Meta:
         managed = False
