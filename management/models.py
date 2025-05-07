@@ -142,9 +142,10 @@ class Suppliers(models.Model):
 class Warehouses(models.Model):
     warehouse_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    location = models.TextField(blank=True, null=True)
     capacity = models.IntegerField()
     created_at = models.DateTimeField(blank=True, null=True)
+    lat = models.DecimalField(max_digits=20, decimal_places=15)
+    long = models.DecimalField(max_digits=20, decimal_places=15)
 
     def __str__(self):
         return str(self.warehouse_id) + ' - ' + self.name
