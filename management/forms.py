@@ -1,6 +1,7 @@
 from django import forms
 from .models import Warehouses
 from geopy.geocoders import Nominatim
+from time import sleep
 
 class WarehouseAdminForm(forms.ModelForm):
     address = forms.CharField(
@@ -18,5 +19,6 @@ class WarehouseAdminForm(forms.ModelForm):
         if self.instance and self.instance.lat and self.instance.long:
             geolocator = Nominatim(user_agent="warehouse_geocoder")
             location = geolocator.reverse((self.instance.lat, self.instance.long))
+            sleep(1)
             if location:
                 self.fields['address'].initial = location.address

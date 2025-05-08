@@ -1,7 +1,9 @@
 # views.py
 from django.shortcuts import render
+from django.http import JsonResponse, HttpResponseNotAllowed
 from .models import Warehouses, Shipments
 from geopy.geocoders import Nominatim
+from time import sleep
 
 def index(request):
     warehouses = Warehouses.objects.all()
@@ -16,6 +18,7 @@ def index(request):
         sum_lat += w.lat
         sum_long += w.long
         location = geolocator.reverse((w.lat, w.long))
+        sleep(1)
         address = location.address if location else "Unknown Address"
 
         if shipments1:
@@ -49,3 +52,13 @@ def index(request):
         'shipment_data': shipment_data
     }
     return render(request, 'index.html', context)
+
+def update_coords(request, id):
+    if request.method == 'POST':
+        # Handle the POST request logic here
+        Shipments.sa
+        return JsonResponse({'message': f'Coordinates updated for ID: {id}'})
+    else:
+        # Return a 405 Method Not Allowed response for non-POST requests
+        return HttpResponseNotAllowed(['POST'])
+
