@@ -73,7 +73,7 @@ def update_coords(request, id):
 def update_shipment_state(request, id):
     if(request.method == 'POST'):
         shipment_data = json.loads(request.body)
-        shipment = Shipments.objects.filter(shipment_id = id)
+        shipment = Shipments.objects.filter(shipment_id = id)[0]
         shipment.delivery_status = shipment_data['status']
         shipment.save(update_fields = ['delivery_status'])
 

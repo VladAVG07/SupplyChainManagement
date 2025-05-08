@@ -35,9 +35,18 @@ function sendShipments(coords, id) {
 			counter += 30;
 		} else {
 			clearInterval(intervalId);
+			const response = await fetch(
+				`http://127.0.0.1:8000/update_shipment_state/${id}`,
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						status: 'Delivered',
+					}),
+				}
+			);
 			counter = 0;
 		}
-	}, 2000);
+	}, 100);
 }
 
 window.addEventListener('load', () => {
@@ -86,7 +95,7 @@ window.addEventListener('load', () => {
 						console.log(routes1); // Use routes1 here
 						// Example: Add a line to the map
 
-						sendShipments(routes1, s.id);
+						sendShipments(routes1, s.id, s.lat, s.long);
 						// routes1.forEach((coords, index) => {
 						// 	setTimeout(() => {
 						// 		marker.setLatLng(coords);

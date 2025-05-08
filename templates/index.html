@@ -101,17 +101,28 @@
 									<li
 										class="list-group-item list-group-item-action"
 										style="cursor: pointer">
-										<strong>Warehouse:</strong>
-										{{ shipment.warehouse.name }}
-										<br />
-										<strong>Location:</strong>
-										{{ shipment.location }}
-										<br />
-										<strong>Status:</strong>
-										{{shipment.delivery_status}}
+										<a
+											href="{% url 'admin:management_shipments_change' shipment.shipment_id %}"
+											class="text-decoration-none text-light">
+											<strong>Warehouse:</strong>
+											{{ shipment.warehouse.name }}
+											<br />
+											<strong>Location:</strong>
+											{{ shipment.location }}
+											<br />
+											<strong>Status:</strong>
+											{{ shipment.delivery_status }}
+										</a>
 									</li>
 									{% endfor %}
 								</ul>
+								<div class="text-center mt-3">
+									<a
+										href="{% url 'admin:management_shipments_add' %}"
+										class="btn btn-success">
+										Add Shipment
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
