@@ -5,8 +5,10 @@ from .models import Warehouses, Shipments
 from geopy.geocoders import Nominatim
 from time import sleep
 import json
+from .kafka_producer import send_shipment_status_update, init_topic
 
 def index(request):
+    init_topic()
     warehouses = Warehouses.objects.all()
     shipments = Shipments.objects.all()
     geolocator = Nominatim(user_agent='warehouse_app')
@@ -76,6 +78,8 @@ def update_shipment_state(request, id):
         shipment = Shipments.objects.filter(shipment_id = id)[0]
         shipment.delivery_status = shipment_data['status']
         shipment.save(update_fields = ['delivery_status'])
+
+        send_shipment_status_update(shipment.shipment_id, shipment.delivery_status)
 
         return JsonResponse({'message': 'Updated successfully'})
     

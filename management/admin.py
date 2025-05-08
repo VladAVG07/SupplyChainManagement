@@ -46,6 +46,7 @@ class PaymentsAdmin(AutoListDisplayAdmin):
 
 @admin.register(Shipments)
 class ShipmentsAdmin(AutoListDisplayAdmin):
+    readonly_fields = ('latitude', 'longitude')
     pass
 
 @admin.register(SupplierProducts)
