@@ -105,8 +105,8 @@ class Shipments(models.Model):
     delivery_status = models.CharField(max_length=50, blank=True, null=True)
     tracking_number = models.CharField(unique=True, max_length=50, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True)
+    latitude = models.DecimalField(max_digits=20, decimal_places=15)
     longitude = models.DecimalField(max_digits=20, decimal_places=15)
-
 
     class Meta:
         managed = False

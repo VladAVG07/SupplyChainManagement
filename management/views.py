@@ -4,6 +4,7 @@ from django.http import JsonResponse, HttpResponseNotAllowed
 from .models import Warehouses, Shipments
 from geopy.geocoders import Nominatim
 from time import sleep
+import json
 
 def index(request):
     warehouses = Warehouses.objects.all()
@@ -27,7 +28,8 @@ def index(request):
                 shipment_data.append({
                     'id': s.shipment_id,
                     'lat': location.latitude,
-                    'long': location.longitude
+                    'long': location.longitude,
+                    'status': s.delivery_status
                 })
 
 
@@ -56,9 +58,27 @@ def index(request):
 def update_coords(request, id):
     if request.method == 'POST':
         # Handle the POST request logic here
-        Shipments.sa
+        shipment_data = json.loads(request.body)
+        shipment = Shipments.objects.filter(shipment_id = id)[0]
+        shipment.latitude = shipment_data['latitude']
+        shipment.longitude = shipment_data['longitude']
+        shipment.save(update_fields=['latitude', 'longitude'])
+
         return JsonResponse({'message': f'Coordinates updated for ID: {id}'})
     else:
         # Return a 405 Method Not Allowed response for non-POST requests
+        return HttpResponseNotAllowed(['POST'])
+    
+
+def update_shipment_state(request, id):
+    if(request.method == 'POST'):
+        shipment_data = json.loads(request.body)
+        shipment = Shipments.objects.filter(shipment_id = id)
+        shipment.delivery_status = shipment_data['status']
+        shipment.save(update_fields = ['delivery_status'])
+
+        return JsonResponse({'message': 'Updated successfully'})
+    
+    else:
         return HttpResponseNotAllowed(['POST'])
 
