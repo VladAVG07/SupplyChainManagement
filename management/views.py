@@ -6,9 +6,12 @@ from geopy.geocoders import Nominatim
 from time import sleep
 import json
 from .kafka_producer import send_shipment_status_update, init_topic
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 def index(request):
-    init_topic()
+    # init_topic()
     warehouses = Warehouses.objects.all()
     shipments = Shipments.objects.all()
     geolocator = Nominatim(user_agent='warehouse_app')
@@ -85,4 +88,3 @@ def update_shipment_state(request, id):
     
     else:
         return HttpResponseNotAllowed(['POST'])
-
