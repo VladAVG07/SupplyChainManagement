@@ -55,7 +55,7 @@ def send_shipment_email(shipment_data):
         send_mail(
             subject,
             message,
-            settings.EMAIL_HOST_USER,  # Sender's email (use your email here)
+            settings.EMAIL_HOST_USER,
             recipient_list,
             fail_silently=False,
         )
